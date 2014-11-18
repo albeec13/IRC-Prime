@@ -1,6 +1,8 @@
 var express = require('express')
   , cors = require('cors')
   , app = express()
+  , jsonBody = require('body-parser').json()
+  , crypto = require('crypto')
   , irc = require('irc')
   , ircDataProvider = require('./ircDataProvider').ircDataProvider
   , opengraphParser = require('./opengraphParser.js').opengraphParser;
@@ -240,7 +242,9 @@ client.addListener('error', function(message) {
     console.log('error: ', message);
 });
 
-/* SERVER ENDPOINTS FOR RETURNING JSON DATA */
+/* EXPRESS CONFIG AND SERVER ENDPOINTS FOR RETURNING JSON DATA */
+app.use(jsonBody);
+
 app.get('/users/', cors(corsOptions), function(req, res, next){
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   if(dbReady) {
@@ -274,6 +278,17 @@ app.get('/tubes/', cors(corsOptions), function(req, res, next){
     ircData.find(function(error, data) {
       res.json(data);
     },'tubes');
+  }
+});
+
+app.post('/auth/', cors(corsOptions), function(req, res, next){
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  if(dbReady) {
+    var user = req.body.user, pass = req.body.pass;
+    console.log(user + ":" + pass);
+    crypto.randomBytes(48, function(ex, buf) {
+      res.json({token: buf.toString('base64')});
+    });
   }
 });
   
