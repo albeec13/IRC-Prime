@@ -292,26 +292,5 @@ app.post('/auth/', cors(corsOptions), function(req, res, next){
   }
 });
   
-/* DATA GATHERING HELPER FUNCTIONS */
-var getMessages = function() {
-    ret = "";
-    
-    for (var i = 0; i < data.messages.length; i++) {
-        ret = ret + data.messages[i] + '\n';
-    }
-    
-    return ret;
-};
-
-var getURLs = function() {
-    ret = "";
-    
-    for (var i = 0; i < data.URLs.length; i++) {
-        ret = ret + data.URLs[i] + '\n';
-    }
-    
-    return ret;
-};
-
 /* START SERVER */
 app.listen(26969);
