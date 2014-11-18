@@ -24,7 +24,7 @@ var getOGPmongoUpdate = function(url, callback) {
 };
 
 /* CORS ROUTING CONFIGURATION */
-var whitelist = ['http://thecact.us', 'http://thewalr.us', 'http://www.thecact.us', 'http://www.thewalr.us'];
+var whitelist = ['http://thecact.us', 'https://thecact.us', 'http://thewalr.us', 'http://www.thecact.us', 'https://www.thecact.us', 'http://www.thewalr.us'];
 
 var corsOptions = {
   origin: function(origin, callback){
