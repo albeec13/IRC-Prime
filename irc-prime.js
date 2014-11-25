@@ -245,6 +245,8 @@ client.addListener('error', function(message) {
 /* EXPRESS CONFIG AND SERVER ENDPOINTS FOR RETURNING JSON DATA */
 app.use(jsonBody);
 
+app.options('/auth/',cors(corsOptions));
+
 app.get('/users/', cors(corsOptions), function(req, res, next){
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   if(dbReady) {
