@@ -125,7 +125,7 @@ var youtubeLink = function(url) {
 }
 
 /* IRC CLIENT CONNECTION AND LISTENERS */
-var client = new irc.Client('morgan.freenode.net', 'Laticus-Prime', {channels: ['#laticus']});
+var client = new irc.Client('morgan.freenode.net', 'Laticus-Prime', {channels: ['#laticus'], retryCount: 5000, retryDelay: 30000});
 
 client.addListener('message#laticus', function (from, message) {
   var usersUpdate = {"$inc" : {"posts" : 1, "links" : 0}, "$setOnInsert" : {"lastLogin" : "unknown", "online" : true}};
@@ -247,12 +247,14 @@ app.use(jsonBody);
 
 app.options('/auth/',cors(corsOptions));
 
-app.get('/users/', cors(corsOptions), function(req, res, next){
+app.get('/users/:start_ID/:limit/', cors(corsOptions), function(req, res, next){
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   if(dbReady) {
+    var criteria = {};
+    var limit = parseInt(req.params.limit);
     ircData.find(function(error, data) {
       res.json(data);
-    },'users');
+    },'users',criteria,limit);
   }
 });
 
