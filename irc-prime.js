@@ -33,7 +33,7 @@ var corsOptions = {
   },
   maxAge: 1728000,
   exposedHeaders: 'Location',
-  methods: 'GET,POST,OPTIONS',
+  methods: 'GET,POST,OPTIONS,DELETE',
   allowedHeaders: 'Authorization,Content-Type,Accept,Origin,User-Agent,DNT,Cache-Control,X-Mx-ReqToken,Keep-Alive,X-Requested-With,If-Modified-Since'
 };
 
@@ -246,6 +246,7 @@ client.addListener('error', function(message) {
 app.use(jsonBody);
 
 app.options('/auth/',cors(corsOptions));
+app.options('/rem/:collection/:doc_id/:sessionToken/',cors(corsOptions));
 
 app.get('/users/:start_ID/:limit/', cors(corsOptions), function(req, res, next){
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
@@ -293,6 +294,27 @@ app.post('/auth/', cors(corsOptions), function(req, res, next){
     crypto.randomBytes(48, function(ex, buf) {
       res.json({token: buf.toString('base64')});
     });
+  }
+});
+
+app.delete('/rem/:collection/:doc_id/:sessionToken/', cors(corsOptions), function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  if(dbReady) {
+    var collection = req.params.collection;
+    var id = req.params.doc_id;
+    var token = req.params.sessionToken;
+    /*
+    ircData.delete(function(error, nRemoved) {
+      if(error) console.log(error);
+      else {
+        if(nRemoved <= 0) {
+          res.json({"deleted" : false});
+        }
+        else if(nRemoved >= 1) {
+          res.json({"deleted" : true, "id" : id, "collection" : collection});
+        }
+      }
+    }, collection, id);*/
   }
 });
   
