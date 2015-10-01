@@ -1,10 +1,15 @@
 var http = require('http');
 
 opengraphParser = function() {
-  this.defaultOptions = function(){return {hostname: 'www.opengraph.io', path: '/api/1.0/site/'}}; 
-  this.ogHybridParse = function(JSONPdata) {
-    jsonData = JSON.parse(JSONPdata);
-    return(jsonData.hybridGraph);
+  this.defaultOptions = function(){return {hostname: 'opengraph.io', path: '/api/1.0/site/'}}; 
+  this.ogHybridParse = function(JSONPdata, next) {
+    try {
+      jsonData = JSON.parse(JSONPdata);
+      next(null, jsonData);
+    } catch (e) {
+      next(e);
+    }
+    //return(jsonData.hybridGraph);
   };
 };
 
@@ -17,9 +22,16 @@ opengraphParser.prototype.getHybridGraph = function(url, callback) {
     res.on('data', function(chunk) {
       JSONPdata = JSONPdata + chunk;
     }).on('end', function() {
-      hybridGraph = ogHybridParse(JSONPdata);
-      if(hybridGraph) {callback(null, hybridGraph);}
-      else {callback("Unable to get HybridGraph data", null);}
+      //hybridGraph = ogHybridParse(err,JSONPdata);
+      ogHybridParse(JSONPdata, function(err, jsonData) {
+        if(err) {
+          callback("Unable to get HybridGraph data", null);
+        } else {
+          callback(null, jsonData.hybridGraph);          
+        }
+      });
+      //if(hybridGraph) {callback(null, hybridGraph);}
+      //else {callback("Unable to get HybridGraph data", null);}
     });
   });
   

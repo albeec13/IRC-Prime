@@ -55,5 +55,23 @@ ircDataProvider.prototype.delete = function(callback, collectionName, id) {
   }, collectionName);
 };
 
+ircDataProvider.prototype.update = function(callback, collectionName, criteria, updateData, options) {
+  this.getCollection(function(error, collection) {
+    if(error) callback(error);
+    else {
+      collection.update(criteria, updateData, options, callback);
+    }
+  }, collectionName);
+};
+
+ircDataProvider.prototype.insert = function(callback, collectionName, insertData) {
+  this.getCollection(function(error, collection) {
+    if(error) callback(error);
+    else {
+      collection.insert(insertData, callback);
+    }
+  }, collectionName);
+};
+
 exports.ircDataProvider = ircDataProvider;
 
