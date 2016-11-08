@@ -237,6 +237,9 @@ app.get('/users/:start_ID/:limit/', cors(corsOptions), function(req, res, next){
       res.json(data);
     },'users',criteria,limit);
   }
+  else {
+    res.json(null);
+  }
 });
 
 app.get('/links/', cors(corsOptions), function(req, res, next){
@@ -245,6 +248,9 @@ app.get('/links/', cors(corsOptions), function(req, res, next){
     ircData.find(function(error, data) {
       res.json(data);
     },'links');
+  }
+  else {
+    res.json(null);
   }
 });
 
@@ -255,6 +261,9 @@ app.get('/activity/', cors(corsOptions), function(req, res, next){
       res.json(data);
     },'activity');
   }
+  else {
+    res.json(null);
+  }
 });
 
 app.get('/tubes/', cors(corsOptions), function(req, res, next){
@@ -263,6 +272,9 @@ app.get('/tubes/', cors(corsOptions), function(req, res, next){
     ircData.find(function(error, data) {
       res.json(data);
     },'tubes');
+  }
+  else {
+    res.json(null);
   }
 });
 
