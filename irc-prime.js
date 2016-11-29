@@ -29,7 +29,7 @@ var whitelist = ['http://thecact.us', 'https://thecact.us', 'http://thewalr.us',
 var corsOptions = {
   origin: function(origin, callback){
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    callback(null, originIsWhitelisted);
+    callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
   },
   maxAge: 1728000,
   exposedHeaders: 'Location',
