@@ -16,7 +16,7 @@ opengraphParser = function() {
 opengraphParser.prototype.getHybridGraph = function(url, callback) {
   var options = new this.defaultOptions();
   var ogHybridParse = this.ogHybridParse;
-  options.path = options.path + encodeURIComponent(url);
+  options.path = options.path + encodeURIComponent(url) + '?app_id=XXXXXXXXXXXXXXX';
   var req = http.get(options, function(res) {
     var JSONPdata = "";
     res.on('data', function(chunk) {
